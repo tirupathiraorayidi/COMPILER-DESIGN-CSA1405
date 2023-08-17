@@ -71,3 +71,14 @@ int main()
         printf("%c ",operators[j]);
 }
 }
+
+OUTPUT :
+
+enter the string : a+b+c=25-tiru
+ identifiers : a b c t i r u
+ constants : 25
+ operators : + + = -
+--------------------------------
+Process exited after 117.6 seconds with return value 0
+Press any key to continue . . .
+
