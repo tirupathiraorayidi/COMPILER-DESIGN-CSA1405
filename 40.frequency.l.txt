@@ -1,0 +1,20 @@
+%{
+    int count=0;
+%}
+
+%%
+
+tiru  count++;
+(.|\n)    ;
+
+%%
+
+int yywrap(){}
+
+int main()
+{
+   printf("enter string with the tiru::");
+    yylex();
+    printf("Count of \"tiru\"= %d \n",count);  
+    return 0;
+}
