@@ -1,0 +1,16 @@
+%{
+#include <stdio.h>
+%}
+
+%%
+"rayidi"    { printf("chowdary "); }
+.          { printf("%c", yytext[0]); }
+%%
+int yywrap()
+{}
+
+
+int main(int argc, char** argv) {
+    yylex();
+
+}
