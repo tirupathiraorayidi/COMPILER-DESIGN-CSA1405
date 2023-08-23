@@ -1,12 +1,15 @@
 #include<stdio.h>
 #include<string.h>
+
 int i,j,k,m,n=0,o,p,ns=0,tn=0,rr=0,ch=0;
 char read[15][10],gl[15],gr[15][10],temp,templ[15],tempr[15][10],*ptr,temp2[5],dfa[15][15];
+
 struct states
 {
     char lhs[15],rhs[15][10];
     int n;
 }I[15];
+
 int compstruct(struct states s1,struct states s2)
 {
     int t;
@@ -19,10 +22,12 @@ int compstruct(struct states s1,struct states s2)
             return 0;
     return 1;
 }
+
 void moreprod()
 {
     int r,s,t,l1=0,rr1=0;
     char *ptr1,read1[15][10];
+
     for(r=0;r<I[ns].n;r++)
     {
         ptr1=strchr(I[ns].rhs[l1],'.');
@@ -44,6 +49,7 @@ void moreprod()
         }
         else
             continue;
+
         for(s=0;s<n;s++)
         {
             if(gl[s]==temp)
@@ -58,6 +64,7 @@ void moreprod()
         }
     }
 }
+
 void canonical(int l)
 {
     int t1;
@@ -69,8 +76,10 @@ void canonical(int l)
         t1=ptr1-I[l].rhs[i];
         if( t1+1==strlen(I[l].rhs[i]) )
             continue;
+
         temp2[1]=I[l].rhs[i][t1+1];
         temp2[2]=NULL;
+
         for(j=0;j<rr1;j++)
             if( strcmp(temp2,read1[j])==0 )
                 break;
@@ -82,6 +91,7 @@ void canonical(int l)
         }
         else
             continue;
+
         for(j=0;j<I[0].n;j++)
         {
             ptr=strstr(I[l].rhs[j],temp2);
@@ -93,6 +103,7 @@ void canonical(int l)
                 tn++;
             }
         }
+
         for(j=0;j<tn;j++)
         {
             ptr=strchr(tempr[j],'.');
@@ -104,9 +115,11 @@ void canonical(int l)
             strcpy(I[ns].rhs[I[ns].n],tempr[j]);
             I[ns].n++;
         }
+
         moreprod();
         for(j=0;j<ns;j++)
         {
+            //if ( memcmp(&I[ns],&I[j],sizeof(struct states))==1 )
             if( compstruct(I[ns],I[j])==1 )
             {
                 I[ns].lhs[0]=NULL;
@@ -127,6 +140,7 @@ void canonical(int l)
             }
             continue;
         }
+
         dfa[l][j]=temp2[1];
         printf("\n\nI%d :",ns);
         for(j=0;j<I[ns].n;j++)
@@ -141,11 +155,13 @@ void canonical(int l)
         }
     }
 }
+
 void main()
 {
     FILE *f;
     int l;
     clrscr();
+
     for(i=0;i<15;i++)
     {
         I[i].n=0;
@@ -153,6 +169,7 @@ void main()
         I[i].rhs[0][0]=NULL;
         dfa[i][0]=NULL;
     }
+
     f=fopen("tab6.txt","r");
     while(!feof(f))
     {
@@ -160,9 +177,11 @@ void main()
         fscanf(f,"%s\n",gr[n]);
         n++;
     }
+
     printf("THE GRAMMAR IS AS FOLLOWS\n");
     for(i=0;i<n;i++)
         printf("\t\t\t\t%c -> %s\n",gl[i],gr[i]);
+
     I[0].lhs[0]='Z';
     strcpy(I[0].rhs[0],".S");
     I[0].n++;
@@ -193,14 +212,18 @@ void main()
         }
     }
     ns++;
+
     printf("\nI%d :\n",ns-1);
     for(i=0;i<I[0].n;i++)
         printf("\t%c -> %s\n",I[0].lhs[i],I[0].rhs[i]);
+
     for(l=0;l<ns;l++)
         canonical(l);
+
     printf("\n\n\t\tPRESS ANY KEY FOR DFA TABLE");
     getch();
     clrscr();
+
     printf("\t\t\tDFA TABLE IS AS FOLLOWS\n\n\n");
     for(i=0;i<ns;i++)
     {
@@ -213,3 +236,11 @@ void main()
     printf("\n\n\n\t\tPRESS ANY KEY TO EXIT");
     getch();
 }
+
+output:
+S S+T
+S T
+T T*F
+T F
+F (S)
+F t
